@@ -1,0 +1,741 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Bir Sorum Var! ✨</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,51,102,.12), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(138,43,226,.12), transparent 30%),
+        linear-gradient(135deg, #0f0c20, #15102a, #06040a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* =========================
+   ARKA PLAN PARÇACIKLARI
+========================= */
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ff3366;
+    border-radius: 50%;
+    opacity: .5;
+    pointer-events: none;
+    animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(110vh) scale(.3);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: .7;
+    }
+
+    80% {
+        opacity: .7;
+    }
+
+    100% {
+        transform: translateY(-10vh) scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   UÇAN KALPLER
+========================= */
+
+.bg-heart {
+    position: absolute;
+    color: rgba(255, 51, 102, .18);
+    animation: floatUp linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(110vh) rotate(0deg) scale(.5);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-15vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   KART
+========================= */
+
+.card {
+    background: rgba(255,255,255,.045);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    padding: 45px 50px;
+    border-radius: 28px;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 40px rgba(255,51,102,.08);
+
+    max-width: 90%;
+    width: 450px;
+
+    animation: cardEntrance 1s cubic-bezier(.17,.89,.32,1.28);
+    transition: .4s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.6),
+        0 0 50px rgba(255,51,102,.15);
+}
+
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(.8) rotateX(15deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.03);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   BAŞLIK
+========================= */
+
+h1 {
+    color: white;
+    font-size: 30px;
+    margin: 0 0 40px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    animation: textGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+    0%,100% {
+        text-shadow: 0 0 5px rgba(255,255,255,.1);
+    }
+
+    50% {
+        text-shadow:
+            0 0 15px rgba(255,51,102,.35),
+            0 0 30px rgba(255,51,102,.15);
+    }
+}
+
+/* =========================
+   BUTONLAR
+========================= */
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    min-height: 70px;
+}
+
+button {
+    padding: 16px 40px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+
+    transition:
+        transform .25s cubic-bezier(.175,.885,.32,1.275),
+        box-shadow .25s,
+        filter .25s;
+}
+
+button:active {
+    transform: scale(.9) !important;
+}
+
+#yes-btn {
+    background: linear-gradient(135deg,#ff3366,#ff5e62);
+    color: white;
+
+    box-shadow:
+        0 8px 25px rgba(255,51,102,.4);
+
+    animation: yesPulse 2s infinite;
+}
+
+@keyframes yesPulse {
+    0%,100% {
+        box-shadow:
+            0 8px 25px rgba(255,51,102,.4);
+    }
+
+    50% {
+        box-shadow:
+            0 8px 35px rgba(255,51,102,.7),
+            0 0 20px rgba(255,51,102,.35);
+    }
+}
+
+#yes-btn:hover {
+    transform: scale(1.12) translateY(-3px);
+    filter: brightness(1.15);
+}
+
+#no-btn {
+    background: rgba(255,255,255,.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,.2);
+
+    transition:
+        transform .15s ease-out,
+        top .2s ease-out,
+        left .2s ease-out;
+}
+
+#no-btn:hover {
+    background: rgba(255,255,255,.16);
+}
+
+/* =========================
+   SONUÇ EKRANI
+========================= */
+
+#result-container {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    animation: resultEntrance 1.2s cubic-bezier(.17,.89,.32,1.28);
+}
+
+@keyframes resultEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(.2) rotate(-10deg);
+    }
+
+    70% {
+        transform: scale(1.1) rotate(3deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* =========================
+   KALP
+========================= */
+
+.heart-container {
+    position: relative;
+    margin-bottom: 45px;
+    animation: heartFloat 3s ease-in-out infinite;
+}
+
+@keyframes heartFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.heart {
+    background: #ff3366;
+    height: 120px;
+    width: 120px;
+    position: relative;
+    transform: rotate(-45deg);
+
+    box-shadow:
+        0 0 30px #ff3366,
+        0 0 70px rgba(255,51,102,.65);
+
+    animation: beat 1s infinite ease-in-out;
+}
+
+.heart:before,
+.heart:after {
+    content: "";
+    background: #ff3366;
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    position: absolute;
+}
+
+.heart:before {
+    top: -60px;
+    left: 0;
+}
+
+.heart:after {
+    top: 0;
+    left: 60px;
+}
+
+@keyframes beat {
+    0%,100% {
+        transform: rotate(-45deg) scale(1);
+    }
+
+    25% {
+        transform: rotate(-45deg) scale(1.12);
+    }
+
+    50% {
+        transform: rotate(-45deg) scale(1);
+    }
+
+    75% {
+        transform: rotate(-45deg) scale(1.18);
+    }
+}
+
+/* =========================
+   MESAJ
+========================= */
+
+.message {
+    color: white;
+    font-size: 38px;
+    font-weight: 700;
+    text-align: center;
+
+    background: linear-gradient(
+        90deg,
+        #ff3366,
+        #ff8a00,
+        #ff3366
+    );
+
+    background-size: 200% auto;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation:
+        messageGlow 2s infinite,
+        gradientMove 3s linear infinite;
+}
+
+@keyframes gradientMove {
+    to {
+        background-position: 200% center;
+    }
+}
+
+@keyframes messageGlow {
+    0%,100% {
+        filter: drop-shadow(0 2px 8px rgba(255,51,102,.3));
+    }
+
+    50% {
+        filter: drop-shadow(0 2px 25px rgba(255,51,102,.7));
+    }
+}
+
+/* =========================
+   PATLAMA KALPLERİ
+========================= */
+
+.celebration-heart {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+
+    animation:
+        burst 1.2s forwards cubic-bezier(.1,.8,.2,1);
+}
+
+@keyframes burst {
+    0% {
+        transform: translate(0,0) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(var(--x),var(--y))
+            scale(var(--s))
+            rotate(var(--r));
+        opacity: 0;
+    }
+}
+
+/* =========================
+   MOBİL
+========================= */
+
+@media(max-width:600px) {
+
+    .card {
+        width: 90%;
+        padding: 35px 25px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .btn-container {
+        gap: 12px;
+    }
+
+    button {
+        padding: 14px 28px;
+        font-size: 18px;
+    }
+
+    .message {
+        font-size: 30px;
+        padding: 0 20px;
+    }
+
+    .heart,
+    .heart:before,
+    .heart:after {
+        width: 90px;
+        height: 90px;
+    }
+
+    .heart:before {
+        top: -45px;
+    }
+
+    .heart:after {
+        left: 45px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="question-container" class="card">
+    <h1 id="question-text">Beni seviyor musun? 🥺</h1>
+
+    <div class="btn-container">
+        <button id="yes-btn" onclick="selectYes()">Evet</button>
+        <button id="no-btn" onclick="escapeNo()">Hayır</button>
+    </div>
+</div>
+
+<div id="result-container">
+
+    <div class="heart-container">
+        <div class="heart"></div>
+    </div>
+
+    <div class="message">
+        Aklıma geldiğin an içim huzurla doluyor Seni çok seviyorum ırmağım iyi ki hayatımdasın ❤️
+    </div>
+
+</div>
+
+<script>
+
+let scale = 1;
+let clickCount = 0;
+
+const noBtn = document.getElementById("no-btn");
+const yesBtn = document.getElementById("yes-btn");
+const questionText = document.getElementById("question-text");
+
+/* =========================
+   ARKA PLAN KALPLERİ
+========================= */
+
+function createBackgroundHearts() {
+
+    const icons = ["❤️","💖","💗","💕","✨"];
+
+    for(let i=0;i<30;i++) {
+
+        setTimeout(() => {
+
+            const heart = document.createElement("div");
+
+            heart.className = "bg-heart";
+
+            heart.innerText =
+                icons[Math.floor(Math.random()*icons.length)];
+
+            heart.style.left =
+                Math.random()*100 + "vw";
+
+            heart.style.fontSize =
+                Math.random()*18 + 12 + "px";
+
+            heart.style.animationDuration =
+                Math.random()*4 + 4 + "s";
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(),9000);
+
+        },i*250);
+    }
+}
+
+createBackgroundHearts();
+
+/* =========================
+   PARÇACIKLAR
+========================= */
+
+function createParticles() {
+
+    for(let i=0;i<35;i++) {
+
+        const particle = document.createElement("div");
+
+        particle.className = "particle";
+
+        particle.style.left =
+            Math.random()*100 + "vw";
+
+        particle.style.animationDuration =
+            Math.random()*5 + 5 + "s";
+
+        particle.style.animationDelay =
+            Math.random()*5 + "s";
+
+        particle.style.opacity =
+            Math.random()*.7;
+
+        document.body.appendChild(particle);
+    }
+}
+
+createParticles();
+
+/* =========================
+   HAYIR BUTONU
+========================= */
+
+function escapeNo() {
+
+    clickCount++;
+
+    if(clickCount === 1) {
+
+        questionText.innerText =
+            "Emin misin? 🥺";
+
+    } else if(clickCount === 2) {
+
+        questionText.innerText =
+            "Son kararındaki eminliğin emin mi? 💔";
+
+    } else if(clickCount === 3) {
+
+        questionText.innerText =
+            "Sistem Hatası:\n'Hayır' diye bir düğme bulunamadı! 🤖";
+
+    } else if(clickCount >= 4) {
+
+        noBtn.style.display = "none";
+
+        questionText.innerText =
+            "Zaten başka çaren yoktu ki! 🥰";
+
+        yesBtn.style.transform =
+            "scale(1.45)";
+
+        return;
+    }
+
+    scale -= .2;
+
+    if(scale < .3)
+        scale = .3;
+
+    const padding = 100;
+
+    const x =
+        Math.random() *
+        (window.innerWidth-padding*2)
+        + padding
+        - window.innerWidth/2;
+
+    const y =
+        Math.random() *
+        (window.innerHeight-padding*2)
+        + padding
+        - window.innerHeight/2;
+
+    noBtn.style.position = "fixed";
+
+    noBtn.style.transform =
+        `scale(${scale}) rotate(${Math.random()*20-10}deg)`;
+
+    noBtn.style.left =
+        `calc(50% + ${x}px - ${noBtn.offsetWidth/2}px)`;
+
+    noBtn.style.top =
+        `calc(50% + ${y}px - ${noBtn.offsetHeight/2}px)`;
+}
+
+/* =========================
+   EVET
+========================= */
+
+function selectYes() {
+
+    const question =
+        document.getElementById("question-container");
+
+    const result =
+        document.getElementById("result-container");
+
+    question.style.animation =
+        "cardExit .5s forwards";
+
+    setTimeout(() => {
+
+        question.style.display = "none";
+
+        result.style.display = "flex";
+
+        createCelebration();
+
+    },450);
+}
+
+/* =========================
+   KALP PATLAMASI
+========================= */
+
+function createCelebration() {
+
+    for(let i=0;i<90;i++) {
+
+        const heart =
+            document.createElement("div");
+
+        heart.className =
+            "celebration-heart";
+
+        heart.innerText =
+            ["❤️","💖","💝","💗","✨","💕"]
+            [Math.floor(Math.random()*6)];
+
+        const angle =
+            Math.random()*Math.PI*2;
+
+        const distance =
+            Math.random()*450 + 80;
+
+        const x =
+            Math.cos(angle)*distance;
+
+        const y =
+            Math.sin(angle)*distance;
+
+        const size =
+            Math.random()*2.5 + .7;
+
+        const rotation =
+            Math.random()*720 - 360;
+
+        heart.style.setProperty("--x",x+"px");
+        heart.style.setProperty("--y",y+"px");
+        heart.style.setProperty("--s",size);
+        heart.style.setProperty("--r",rotation+"deg");
+
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+
+        heart.style.fontSize =
+            Math.random()*15+15+"px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        },1300);
+    }
+}
+
+/* Kart çıkış animasyonu */
+
+const style = document.createElement("style");
+
+style.innerHTML = `
+@keyframes cardExit {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(.7) rotate(-5deg);
+        filter: blur(8px);
+    }
+}
+`;
+
+document.head.appendChild(style);
+
+</script>
+
+</body>
+</html>
+```
